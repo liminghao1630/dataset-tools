@@ -11,10 +11,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
 
 import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
@@ -96,220 +99,209 @@ public class MeasureRecognitionPerformance
         boolean pageCheck = true;
         int normRule = 0;
         
-        for( int i=0; i<args.length; i++ )
-        {
-            if( args[i].equals( STR ) )
-            {
-                str = true;
-            }
-            else if( args[i].equals( REG ) )
-            {
-                str = false;
-            }
-            else if( args[i].equals( DEBUG ) )
-            {
-                debug = true;
-            }
-            else if( args[i].equals( COMPARE ) )
-            {
-                compare = true;
-            }
-            else if( args[i].equals( NO_PAGE ) )
-            {
-                pageCheck = false;
-            }
-            else if( args[i].equals( IGNORE_CHARS ) )
-            {
-                normRule = 1;
-            }
-            else if( args[i].equals( IGNORE_CHARS_2 ) )
-            {
-                normRule = 2;
-            }
-            else if( args[i].equals( STR_IGNORE ) )
-            {
-            	str = true;
-                normRule = 1;
-            }
-            /* Uncomment if switches required
-            else if( args[i].equals( ENCODING ) )
-            {
-                i++;
-                if( i >= args.length )
-                {
-                    usage();
-                }
-                encoding = args[i];
-            }
-            else if( args[i].equals( DIALOG ))
-            {
-            	JFileChooser fcIn = new JFileChooser();
-            	// set up the JFileChoosers
-        		ExampleFileFilter inFilter = new ExampleFileFilter();
-        	    inFilter.addExtension("pdf");
-        	    inFilter.setDescription("Portable Document Format");
-        	    fcIn.addChoosableFileFilter(inFilter);
+//        for( int i=0; i<args.length; i++ )
+//        {
+//            if( args[i].equals( STR ) )
+//            {
+//                str = true;
+//            }
+//            else if( args[i].equals( REG ) )
+//            {
+//                str = false;
+//            }
+//            else if( args[i].equals( DEBUG ) )
+//            {
+//                debug = true;
+//            }
+//            else if( args[i].equals( COMPARE ) )
+//            {
+//                compare = true;
+//            }
+//            else if( args[i].equals( NO_PAGE ) )
+//            {
+//                pageCheck = false;
+//            }
+//            else if( args[i].equals( IGNORE_CHARS ) )
+//            {
+//                normRule = 1;
+//            }
+//            else if( args[i].equals( IGNORE_CHARS_2 ) )
+//            {
+//                normRule = 2;
+//            }
+//            else if( args[i].equals( STR_IGNORE ) )
+//            {
+//            	str = true;
+//                normRule = 1;
+//            }
+//            /* Uncomment if switches required
+//            else if( args[i].equals( ENCODING ) )
+//            {
+//                i++;
+//                if( i >= args.length )
+//                {
+//                    usage();
+//                }
+//                encoding = args[i];
+//            }
+//            else if( args[i].equals( DIALOG ))
+//            {
+//            	JFileChooser fcIn = new JFileChooser();
+//            	// set up the JFileChoosers
+//        		ExampleFileFilter inFilter = new ExampleFileFilter();
+//        	    inFilter.addExtension("pdf");
+//        	    inFilter.setDescription("Portable Document Format");
+//        	    fcIn.addChoosableFileFilter(inFilter);
+////        	    fcIn.setFileFilter(inFilter);
+//        	    ExampleFileFilter inFilter2 = new ExampleFileFilter();
+//        	    inFilter2.addExtension("png");
+//        	    inFilter2.addExtension("tif");
+//        	    inFilter2.addExtension("tiff");
+//        	    inFilter2.addExtension("jpg");
+//        	    inFilter2.addExtension("jpeg");
+//        	    inFilter2.setDescription("Scanned Image");
+//        	    fcIn.addChoosableFileFilter(inFilter2);
 //        	    fcIn.setFileFilter(inFilter);
-        	    ExampleFileFilter inFilter2 = new ExampleFileFilter();
-        	    inFilter2.addExtension("png");
-        	    inFilter2.addExtension("tif");
-        	    inFilter2.addExtension("tiff");
-        	    inFilter2.addExtension("jpg");
-        	    inFilter2.addExtension("jpeg");
-        	    inFilter2.setDescription("Scanned Image");
-        	    fcIn.addChoosableFileFilter(inFilter2);
-        	    fcIn.setFileFilter(inFilter);
-        	    
-            	if (fcIn.showOpenDialog(fcIn) == JFileChooser.APPROVE_OPTION)
-            		inFile = fcIn.getSelectedFile().getCanonicalPath();
-            }
-            */
-            else
-            {
-                if( inPrefix == null )
-                {
-                    inPrefix = args[i];
-                }
-                else if (resultFile == null)
-                {
-                	resultFile = args[i];
-                }
-                else
-                {
-                	PDFFile = args[i];
-                }
-            }
-        }
+//
+//            	if (fcIn.showOpenDialog(fcIn) == JFileChooser.APPROVE_OPTION)
+//            		inFile = fcIn.getSelectedFile().getCanonicalPath();
+//            }
+//            */
+//            else
+//            {
+//                if( inPrefix == null )
+//                {
+//                    inPrefix = args[i];
+//                }
+//                else if (resultFile == null)
+//                {
+//                	resultFile = args[i];
+//                }
+//                else
+//                {
+//                	PDFFile = args[i];
+//                }
+//            }
+//        }
+//
+//        if( inPrefix == null)
+//        {
+//            usage();
+//        }
+//
+//        // Generate input file names
+//
+//        if (resultFile == null)
+//        {
+//	        PDFFile = inPrefix + ".pdf";
+//	        if (!str)
+//	        {
+//	        	resultFile = inPrefix + "-reg-result.xml";
+//	        	GTFile = inPrefix + "-reg.xml";
+//	        }
+//	        else
+//	        {
+//	        	resultFile = inPrefix + "-str-result.xml";
+//	        	GTFile = inPrefix + "-str.xml";
+//	        }
+//        }
+//        else
+//        {
+//        	// all three files specified at command line
+//        	GTFile = inPrefix;
+//        }
 
-        if( inPrefix == null)
-        {
-            usage();
-        }
+		String GTDir = "D:\\Company\\Projects\\ICDAR_2013_table_GT\\icdar2013-competition-dataset-with-gt\\GT";
+		String resultDir = "D:\\Company\\Projects\\ICDAR_2013_table_GT\\icdar2013-competition-dataset-with-gt\\GT";
+		String PDFDir = "D:\\Company\\Projects\\ICDAR_2013_table_GT\\icdar2013-competition-dataset-with-gt\\pdf";
 
-        // Generate input file names
-        
-        if (resultFile == null)
-        {
-	        PDFFile = inPrefix + ".pdf";
-	        if (!str)
-	        {
-	        	resultFile = inPrefix + "-reg-result.xml";
-	        	GTFile = inPrefix + "-reg.xml";
-	        }
-	        else
-	        {
-	        	resultFile = inPrefix + "-str-result.xml";
-	        	GTFile = inPrefix + "-str.xml";
-	        }
-        }
-        else
-        {
-        	// all three files specified at command line
-        	GTFile = inPrefix;
-        }
-        
-        
-        System.out.println("Using     GTFile: " + GTFile);
-        System.out.println("Using resultFile: " + resultFile);
-        System.out.println("Using    PDFFile: " + PDFFile);
-        
-        
-        // decide whether we have a pdf or image (TODO: command-line override)
-        /*
-        boolean pdf = true;
-		if (inFile.endsWith("png") ||
-			inFile.endsWith("tif") ||
-			inFile.endsWith("tiff")||
-			inFile.endsWith("jpg") ||
-			inFile.endsWith("jpeg")||
-			inFile.endsWith("PNG") ||
-			inFile.endsWith("TIF") ||
-			inFile.endsWith("TIFF") ||
-			inFile.endsWith("JPG") ||
-			inFile.endsWith("JPEG")) pdf = false;
-		*/
-        
-//		System.err.println("Processing: " + inFile);
-		
-        // load the input files
-        File inputResultFile = new File(resultFile);
-        File inputGTFile = new File(GTFile);
-        
-        // parse XML of the input XML file
-        
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        
-        // new
-        /*
-        docBuilderFactory.setValidating(true);
-        docBuilderFactory.setNamespaceAware(true);
-        
-        docBuilderFactory.setAttribute("http://apache.org/xml/features/nonvalidating/load-external-dtd", true);
-        */
-        // end new
-        
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        //new
-//        docBuilder.setEntityResolver(FSEntityResolver.instance());
-        //end new
-        
-        Document inputResultDocument = docBuilder.parse(inputResultFile);
-        Document inputGTDocument = docBuilder.parse(inputGTFile);
-        
-        Document resultDocument = null;
-        
-        
-        // set up page processor object
-        PageProcessor pp = new PageProcessor();
-        pp.setProcessType(PageProcessor.PP_CHAR);
-        pp.setRulingLines(rulingLines);
-        pp.setProcessSpaces(processSpaces);
-        // no iterations should be automatically set to -1
-        
-        System.out.println("startPage: " + startPage);
-        System.out.println("endPage: " + endPage);
-        
-        int count = -1;
-        /*
-        for (Page p : pdfResult)
-        {
-        	count ++;
-        	System.out.println("page " + count);
-        	System.out.println("found page with " + p.getItems().size() + " items");
-        	ListUtils.printList(p.getItems());
-        	System.out.println("===================================================");
-        }
-        */
-        
-        // now replace the coordinates
-        if (!str)
-        {
-        	// PDF processing for region evaluation
-        	File inputPDFFile = new File(PDFFile);
-	        byte[] inputDoc = getBytesFromFile(inputPDFFile);
+		int totalResultItems = 0;
+		int totalGTItems = 0;
+		int totalIntersectionItems = 0;
 
-	        List<Page> pdfResult = ProcessFile.processPDF(inputDoc, pp, startPage, endPage, 
-	        	encoding, password, null, false);
-	        
-	        for (Page p : pdfResult)
-	        {
-	        	if (p.getRotation() == 90)
-    			{
-	        		float yAdjust = p.getWidth() - p.getHeight(); // is -ve
-	        		for (GenericSegment gs : p.getItems())
-	        		{
-	        			gs.setY1(gs.getY1() + yAdjust);
-	        			gs.setY2(gs.getY2() + yAdjust);
-	        		}
-    			}
-	        }
-	        
-        	evaluateResultReg(inputResultDocument, inputGTDocument, pdfResult);
-        }
-        else
-        {
-        	evaluateResultStr(inputResultDocument, inputGTDocument, debug, pageCheck, normRule);
-        }
+		File PDFDirFile = new File(PDFDir);
+		for (String thisPDFFile : PDFDirFile.list()) {
+			inPrefix = thisPDFFile.replace(".pdf", "");
+
+			resultFile = resultDir + "\\" + inPrefix + "-reg.xml";
+			GTFile = GTDir + "\\" + inPrefix + "-reg.xml";
+			PDFFile = PDFDir + "\\" + thisPDFFile;
+
+			System.out.println("Using     GTFile: " + GTFile);
+			System.out.println("Using resultFile: " + resultFile);
+			System.out.println("Using    PDFFile: " + PDFFile);
+
+			// load the input files
+			File inputResultFile = new File(resultFile);
+			File inputGTFile = new File(GTFile);
+
+			// parse XML of the input XML file
+
+			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+
+
+			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+
+			Document inputResultDocument = docBuilder.parse(inputResultFile);
+			Document inputGTDocument = docBuilder.parse(inputGTFile);
+
+			Document resultDocument = null;
+
+
+			// set up page processor object
+			PageProcessor pp = new PageProcessor();
+			pp.setProcessType(PageProcessor.PP_CHAR);
+			pp.setRulingLines(rulingLines);
+			pp.setProcessSpaces(processSpaces);
+			// no iterations should be automatically set to -1
+
+			System.out.println("startPage: " + startPage);
+			System.out.println("endPage: " + endPage);
+
+			int count = -1;
+
+			// now replace the coordinates
+			if (!str) {
+				// PDF processing for region evaluation
+				File inputPDFFile = new File(PDFFile);
+				byte[] inputDoc = getBytesFromFile(inputPDFFile);
+
+				List<Page> pdfResult = ProcessFile.processPDF(inputDoc, pp, startPage, endPage,
+						encoding, password, null, false);
+
+				for (Page p : pdfResult) {
+					if (p.getRotation() == 90) {
+						float yAdjust = p.getWidth() - p.getHeight(); // is -ve
+						for (GenericSegment gs : p.getItems()) {
+							gs.setY1(gs.getY1() + yAdjust);
+							gs.setY2(gs.getY2() + yAdjust);
+						}
+					}
+				}
+
+				ArrayList<Integer> returnValues = evaluateResultReg(inputResultDocument, inputGTDocument, pdfResult);
+				totalIntersectionItems += returnValues.get(0);
+				totalResultItems += returnValues.get(1);
+				totalGTItems += returnValues.get(2);
+
+
+
+			} else {
+				evaluateResultStr(inputResultDocument, inputGTDocument, debug, pageCheck, normRule);
+			}
+
+		}
+
+		float precision = (float) totalIntersectionItems / totalResultItems;
+		float recall = (float) totalIntersectionItems / totalGTItems;
+		float f1 = 2 * precision * recall / (precision + recall);
+
+		NumberFormat formatter = new DecimalFormat("0.00");
+
+        System.out.println("Precision: " + formatter.format(precision));
+        System.out.println("Recall: " + formatter.format(recall));
+		System.out.println("F1: " + formatter.format(f1));
+
       
     }
     
@@ -406,7 +398,7 @@ public class MeasureRecognitionPerformance
     	return regions;
     }
     
-    static void evaluateResultReg(Document inputResultDocument, 
+    static ArrayList<Integer> evaluateResultReg(Document inputResultDocument,
     	Document inputGTDocument, List<Page> pdfResult)
     {
     	List<Region> resultRegions = getRegions(inputResultDocument, pdfResult);
@@ -496,6 +488,11 @@ public class MeasureRecognitionPerformance
     	int detectedRegions = 0;
     	int completeRegions = 0;
     	int pureRegions = 0;
+
+    	// count items number to cal precision recall f1
+		int intersectionItems = 0;
+		int resultItems = 0;
+		int GTItems = 0;
     	
     	/*
     	List<Region> fpRegions = new ArrayList<Region>();
@@ -546,8 +543,16 @@ public class MeasureRecognitionPerformance
     			detectedRegions ++;
     			if (pure) pureRegions ++;
     			purityResult = Boolean.toString(pure);
+
+    			// add result items (only the corresponding result regions)
+				// and the intersection items
+				resultItems += resultRegion.getItems().size();
+				intersectionItems += ListUtils.intersection(thisGTRegion.getItems(), resultRegion.getItems()).size();
     		}
     		if (complete) completeRegions ++;
+
+    		// add gt items
+			GTItems += thisGTRegion.getItems().size();
     		
     		System.out.println("  complete: " + complete +
     			"  pure: " + purityResult);
@@ -578,6 +583,15 @@ public class MeasureRecognitionPerformance
         		" = " + (pureRegions/detectedRegions));
     	else
     		System.out.println("  Purity = " + pureRegions + " / " + detectedRegions + " = N/A");
+
+    	// return values
+    	ArrayList<Integer> returnValues= new ArrayList<Integer>();
+    	returnValues.add(intersectionItems);
+    	returnValues.add(resultItems);
+    	returnValues.add(GTItems);
+
+    	return returnValues;
+
     }
     
     static int compareARs(List<AdjacencyRelation> GTAR, List<AdjacencyRelation> resultAR, boolean debug, int normRule)
