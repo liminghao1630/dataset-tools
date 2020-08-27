@@ -211,9 +211,9 @@ public class MeasureRecognitionPerformance
 //        	GTFile = inPrefix;
 //        }
 
-		String GTDir = "D:\\Company\\Projects\\ICDAR_2013_table_GT\\icdar2013-competition-dataset-with-gt\\GT";
-		String resultDir = "D:\\Company\\Projects\\ICDAR_2013_table_GT\\icdar2013-competition-dataset-with-gt\\GT";
-		String PDFDir = "D:\\Company\\Projects\\ICDAR_2013_table_GT\\icdar2013-competition-dataset-with-gt\\pdf";
+		String GTDir = "D:\\Company\\Projects\\ICDAR_2013_table_evaluate\\icdar2013-competition-dataset-with-gt\\GT";
+		String resultDir = "D:\\Company\\Projects\\ICDAR_2013_table_evaluate\\prediction_results\\icdar2013_table_epoch100";
+		String PDFDir = "D:\\Company\\Projects\\ICDAR_2013_table_evaluate\\icdar2013-competition-dataset-with-gt\\pdf";
 
 		int totalResultItems = 0;
 		int totalGTItems = 0;
@@ -221,9 +221,12 @@ public class MeasureRecognitionPerformance
 
 		File PDFDirFile = new File(PDFDir);
 		for (String thisPDFFile : PDFDirFile.list()) {
+			if (!thisPDFFile.endsWith(".pdf"))
+				continue;
+
 			inPrefix = thisPDFFile.replace(".pdf", "");
 
-			resultFile = resultDir + "\\" + inPrefix + "-reg.xml";
+			resultFile = resultDir + "\\" + inPrefix + "-reg-result.xml";
 			GTFile = GTDir + "\\" + inPrefix + "-reg.xml";
 			PDFFile = PDFDir + "\\" + thisPDFFile;
 
